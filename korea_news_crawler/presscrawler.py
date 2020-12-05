@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8, euc-kr -*-
+# 다른 포털 기사도 크롤링 할 수 있도록 시도해봤는데 생각보다 잘 안돼서 특정 포털의 모든 언론사를 크롤링 하는 코드를 만들어 봤습니다.
 
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
