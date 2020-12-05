@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8, euc-kr -*-
+# -*- coding: utf-8 -*-
 
 from time import sleep
 from bs4 import BeautifulSoup
@@ -12,6 +12,7 @@ import platform
 import calendar
 import requests
 import re
+from newspaper import Article
 
 
 class ArticleCrawler(object):
@@ -46,6 +47,7 @@ class ArticleCrawler(object):
     def make_news_page_url(category_url, start_year, end_year, start_month, end_month):
         made_urls = []
         for year in range(start_year, end_year + 1):
+            print(year)
             if start_year == end_year:
                 year_startmonth = start_month
                 year_endmonth = end_month
@@ -69,7 +71,6 @@ class ArticleCrawler(object):
                         
                     # 날짜별로 Page Url 생성
                     url = category_url + str(year) + str(month) + str(month_day)
-
                     # totalpage는 네이버 페이지 구조를 이용해서 page=10000으로 지정해 totalpage를 알아냄
                     # page=10000을 입력할 경우 페이지가 존재하지 않기 때문에 page=totalpage로 이동 됨 (Redirect)
                     totalpage = ArticleParser.find_news_totalpage(url + "&page=10000")
@@ -82,7 +83,8 @@ class ArticleCrawler(object):
         remaining_tries = int(max_tries)
         while remaining_tries > 0:
             try:
-                return requests.get(url)
+                headers1 = {'User-Agent':'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
+                return requests.get(url, headers=headers1)
             except requests.exceptions:
                 sleep(60)
             remaining_tries = remaining_tries - 1
@@ -93,92 +95,80 @@ class ArticleCrawler(object):
         print(category_name + " PID: " + str(os.getpid()))    
 
         writer = Writer(category_name=category_name, date=self.date)
-
         # 기사 URL 형식
         url = "http://news.naver.com/main/list.nhn?mode=LSD&mid=sec&sid1=" + str(self.categories.get(category_name)) + "&date="
-
         # start_year년 start_month월 ~ end_year의 end_month 날짜까지 기사를 수집합니다.
         day_urls = self.make_news_page_url(url, self.date['start_year'], self.date['end_year'], self.date['start_month'], self.date['end_month'])
         print(category_name + " Urls are generated")
         print("The crawler starts")
 
         for URL in day_urls:
-            print(i)
+            print(URL)
             regex = re.compile("date=(\d+)")
             news_date = regex.findall(URL)[0]
 
             request = self.get_url_data(URL)
-
             document = BeautifulSoup(request.content, 'html.parser')
-
+            
             # html - newsflash_body - type06_headline, type06
             # 각 페이지에 있는 기사들 가져오기
             post_temp = document.select('.newsflash_body .type06_headline li dl')
             post_temp.extend(document.select('.newsflash_body .type06 li dl'))
-            
+           
             # 각 페이지에 있는 기사들의 url 저장
             post = []
+            headlines = []
+            companys = []
+
+            
             for line in post_temp:
                 post.append(line.a.get('href')) # 해당되는 page에서 모든 기사들의 URL을 post 리스트에 넣음
+                try:
+                    companys.append(line.find('span', class_="writing").text)
+                except:
+                    companys.append("err")
+                try:
+                    h = line.find_all('a')
+                    if len(h) > 1:
+                        headlines.append(h[1].text)
+                    elif len(h) == 1:
+                        headlines.append(h[0].text)
+                    else:
+                        headlines.append("err")
+                except:
+                    headlines.append("err")
             del post_temp
-
-            i = 1
-            for content_url in post:  # 기사 URL
-                print(i)
-                i += 1 
+        
+            
+            print(len(post))
+            for i in range(len(post)):  # 기사 URL
                 # 크롤링 대기 시간
+                print(i)
                 sleep(0.01)
+                content_url = post[i]
                 
                 # 기사 HTML 가져옴
-                request_content = self.get_url_data(content_url)
                 try:
-                    document_content = BeautifulSoup(request_content.content, 'html.parser')
-                except:
-                    continue
-
-                try:
-                    # 기사 제목 가져옴
-                    tag_headline = document_content.find_all('h3', {'id': 'articleTitle'}, {'class': 'tts_head'})
-                    text_headline = ''  # 뉴스 기사 제목 초기화
-                    text_headline = text_headline + ArticleParser.clear_headline(str(tag_headline[0].find_all(text=True)))
-                    if not text_headline:  # 공백일 경우 기사 제외 처리
-                        continue
-
-                    # 기사 본문 가져옴
-                    tag_content = document_content.find_all('div', {'id': 'articleBodyContents'})
-                    text_sentence = ''  # 뉴스 기사 본문 초기화
-                    text_sentence = text_sentence + ArticleParser.clear_content(str(tag_content[0].find_all(text=True)))
-                    if not text_sentence:  # 공백일 경우 기사 제외 처리
-                        continue
-
-                    # 기사 언론사 가져옴
-                    tag_company = document_content.find_all('meta', {'property': 'me2:category1'})
-                    text_company = ''  # 언론사 초기화
-                    text_company = text_company + str(tag_company[0].get('content'))
-                    if not text_company:  # 공백일 경우 기사 제외 처리
-                        continue
-                        
-                    # CSV 작성
+                    article = Article(content_url, language='ko')
+                    article.download()
+                    article.parse()
+                    text_sentence = article.text.strip()
+                    text_company = companys[i]
+                    text_headline = headlines[i].strip()
                     wcsv = writer.get_writer_csv()
                     wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
-                    
-                    del text_company, text_sentence, text_headline
-                    del tag_company 
-                    del tag_content, tag_headline
-                    del request_content, document_content
-
-                except Exception as ex:  # UnicodeEncodeError ..
-                    # wcsv.writerow([ex, content_url])
-                    del request_content, document_content
-                    pass
+                except Exception as err:
+                    print(err)
+        
         writer.close()
+        return        
 
     def start(self):
         # MultiProcess 크롤링 시작
         for category_name in self.selected_categories:
+            self.crawling(category_name)
             # proc = Process(target=self.crawling, args=(category_name,))
             # proc.start()
-            self.crawling(category_name)
 
 
 if __name__ == "__main__":
