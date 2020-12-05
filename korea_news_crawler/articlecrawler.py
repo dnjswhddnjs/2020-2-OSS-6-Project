@@ -4,12 +4,9 @@
 from time import sleep
 from bs4 import BeautifulSoup
 from multiprocessing import Process
-from exceptions import *
-from articleparser import ArticleParser
-from writer import Writer
-#from korea_news_crawler.exceptions import *
-#from korea_news_crawler.articleparser import ArticleParser
-#from korea_news_crawler.writer import Writer
+from korea_news_crawler.exceptions import *
+from korea_news_crawler.articleparser import ArticleParser
+from korea_news_crawler.writer import Writer
 import os
 import platform
 import calendar
@@ -106,7 +103,7 @@ class ArticleCrawler(object):
         print("The crawler starts")
 
         for URL in day_urls:
-
+            print(i)
             regex = re.compile("date=(\d+)")
             news_date = regex.findall(URL)[0]
 
@@ -125,7 +122,10 @@ class ArticleCrawler(object):
                 post.append(line.a.get('href')) # 해당되는 page에서 모든 기사들의 URL을 post 리스트에 넣음
             del post_temp
 
+            i = 1
             for content_url in post:  # 기사 URL
+                print(i)
+                i += 1 
                 # 크롤링 대기 시간
                 sleep(0.01)
                 
@@ -176,8 +176,9 @@ class ArticleCrawler(object):
     def start(self):
         # MultiProcess 크롤링 시작
         for category_name in self.selected_categories:
-            proc = Process(target=self.crawling, args=(category_name,))
-            proc.start()
+            # proc = Process(target=self.crawling, args=(category_name,))
+            # proc.start()
+            self.crawling(category_name)
 
 
 if __name__ == "__main__":
