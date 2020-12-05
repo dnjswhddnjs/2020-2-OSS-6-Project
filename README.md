@@ -1,13 +1,17 @@
 # KoreaNewsCrawler 프로젝트 기여 - OSS 6조
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-[KoreaNewsCrawler_github_홈페이지](https://github.com/lumyjuwon/KoreaNewsCrawler)  
-[OSS_6조_static_page_](https://20-2-skku-oss.github.io/2020-2-OSS-6/)
-
 네이버 포털의 올라오는 기사들을 크롤링 해주는 크롤러로, **(네이버 포털 외의 기사들을 크롤링하는 기능도 추가할 예정입니다.)**  
 크롤링 가능한 기사 카테고리는 정치, 경제, 생활문화, IT과학, 사회, 세계, 오피니언입니다.  
 **(기사 카테고리를 더 명확히 하기 위해 병합/삭제/수정을 할 예정입니다.)**  
-**스포츠 카테고리는 현재 html 형식이 바껴 사용이 불가능 한 상태로, 스포츠 기사의 크롤링 기능을 추가할 예정입니다.**  
+
+## 관련 외부링크
+
+[KoreaNewsCrawler_github_홈페이지](https://github.com/lumyjuwon/KoreaNewsCrawler)  
+[OSS_6조_static_page_](https://20-2-skku-oss.github.io/2020-2-OSS-6/)
+
+## For comfortable
+
 
 ## Method
 
@@ -26,9 +30,9 @@
   
  이 메서드는 크롤링 실행 메서드입니다.
  
-* **(키워드를 추출해 정렬하는 메서드)**
+* **(원하는 키워드가 포함된 기사들을 크롤링하는 메서드)**
  
- **기간 안에서 정해진 카테고리의 뉴스 데이터 중 많이 나온 키워드 순으로 정렬하는 메서드를 추가할 예정입니다.**
+ **사용자가 기간/카테고리/원하는 키워드를 입력하면 그 키워드가 포함된 기사들만 크롤링하는 메서드를 추가할 예정입니다.**
  
  
 * **(좋아요/싫어요 반응 순으로 정렬하는 메서드)**
