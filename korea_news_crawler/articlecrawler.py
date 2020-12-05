@@ -29,7 +29,7 @@ class ArticleCrawler(object):
         self.set_category(choosen_categories)
 
     def get_catergory(self):
-        print("카테고리 : 정치 , 경제 , 사회 , 생활문화 , 세계 , IT과학 , 오피니언")
+        print("카테고리 : 정치 , 경제 , 사회 , 생활문화 , 세계 , IT과학 , 오피니언, 연합뉴스속보")
         print("원하는 카테고리를 입력 하세요(공백으로 구분) : ",end ='')
         choosen_categories = input()
         choosen_list = choosen_categories.split(' ')
@@ -45,7 +45,7 @@ class ArticleCrawler(object):
 
     def set_category(self, args):
         for key in args:
-            if self.categories.get(key) is None:
+            if self.categories.get(key) is None and key != '연합뉴스속보':
                 raise InvalidCategory(key)
         self.selected_categories = args
 
@@ -116,7 +116,14 @@ class ArticleCrawler(object):
 
         writer = Writer(category_name=category_name, date=self.date)
         # 기사 URL 형식
-        url = "http://news.naver.com/main/list.nhn?mode=LSD&mid=sec&sid1=" + str(self.categories.get(category_name)) + "&date="
+        if (category_name == "연합뉴스속보"):
+            url = "http://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&sid1=001&sid2=140&oid=001&isYeonhapFlash=Y" \
+                  + "&date="
+
+        else:
+            url = "http://news.naver.com/main/list.nhn?mode=LSD&mid=sec&sid1=" + str(
+                self.categories.get(category_name)) + "&date="
+
         # start_year년 start_month월 ~ end_year의 end_month 날짜까지 기사를 수집합니다.
         day_urls = self.make_news_page_url(url, self.date['start_year'], self.date['end_year'], self.date['start_month'], self.date['end_month'])
         print(category_name + " Urls are generated")
@@ -132,8 +139,12 @@ class ArticleCrawler(object):
             
             # html - newsflash_body - type06_headline, type06
             # 각 페이지에 있는 기사들 가져오기
-            post_temp = document.select('.newsflash_body .type06_headline li dl')
-            post_temp.extend(document.select('.newsflash_body .type06 li dl'))
+            if (category_name == "연합뉴스속보"):
+                post_temp = document.select('.newsflash_body .type02 li ')
+
+            else:
+                post_temp = document.select('.newsflash_body .type06_headline li dl')
+                post_temp.extend(document.select('.newsflash_body .type06 li dl'))
            
             # 각 페이지에 있는 기사들의 url 저장
             post = []
