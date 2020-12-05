@@ -30,7 +30,6 @@ class ArticleCrawler(object):
         self.user_operating_system = str(platform.system())
         self.set_category(choosen_categories)
         self.get_keyword()
-        self.keyword = []
 
     def get_catergory(self):
         print("카테고리 : 정치 , 경제 , 사회 , 생활문화 , 세계 , IT과학 , 오피니언")
@@ -48,11 +47,12 @@ class ArticleCrawler(object):
             self.date[keys] = get_date
 
     def get_keyword(self):
+        keyword = 'init'
         ynkeyword = input("기사 제목 키워드 찾기 기능을 사용하시겠습니까? (y/n) :")
         if (ynkeyword == "n" or ynkeyword == "N"):
             return;
         elif (ynkeyword == "y" or ynkeyword == "Y"):
-            #키워드 저장
+            keyword = input("원하는 키워드를 입력해주세요 :")
             return;
         else:
             print("invalid input")
@@ -193,10 +193,18 @@ class ArticleCrawler(object):
                     text_company = text_company + str(tag_company[0].get('content'))
                     if not text_company:  # 공백일 경우 기사 제외 처리
                         continue
+
+                    #################################################################################
+                    headline_to_words = text_headline.split() # 띄어쓰기 기사 제목 리스트 만들기
+                    if keyword != 'init':
+                        wcsv = writer.get_writer_csv()
+                        # 제목 키워드를 설정했을 때 키워드가 있는 기사만 크롤링하는 코드
                         
-                    # CSV 작성
-                    wcsv = writer.get_writer_csv()
-                    wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
+                    else :   
+                        # CSV 작성
+                        wcsv = writer.get_writer_csv()
+                        wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
+                    #################################################################################
                     
                     del text_company, text_sentence, text_headline
                     del tag_company 
