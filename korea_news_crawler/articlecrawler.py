@@ -43,7 +43,7 @@ class ArticleCrawler(object):
             get_date = int(input())
             self.date[keys] = get_date
 
-    def set_category(self, *args):
+    def set_category(self, args):
         for key in args:
             if self.categories.get(key) is None:
                 raise InvalidCategory(key)
