@@ -7,7 +7,7 @@ clientId = "a1iQBNA9ABqLk88S0m0X"
 clientSecret = "NnuTDAbz6P"
 header = {
     "X-Naver-Client-Id":clientId,
-    "X-Naver-Client-secret":clientSecret
+    "X-Naver-Client-Secret":clientSecret
 }
 
 
