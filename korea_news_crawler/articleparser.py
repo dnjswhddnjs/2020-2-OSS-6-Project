@@ -2,6 +2,14 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
+#네이버 오픈API 서비스를 이용하여 Client Id와 Secert 발급받기
+clientId = "a1iQBNA9ABqLk88S0m0X"
+clientSecret = "NnuTDAbz6P"
+header = {
+    "X-Naver-Client-Id":clientId,
+    "X-Naver-Client-secret":clientSecret
+}
+
 
 class ArticleParser(object):
     special_symbol = re.compile('[\{\}\[\]\/?,;:|\)*~`!^\-_+<>@\#$&▲▶◆◀■【】\\\=\(\'\"]')
@@ -35,7 +43,7 @@ class ArticleParser(object):
         # 당일 기사 목록 전체를 알아냄
         try:
             totlapage_url = url
-            request_content = requests.get(totlapage_url)
+            request_content = requests.get(totlapage_url, headers=header)
             document_content = BeautifulSoup(request_content.content, 'html.parser')
             headline_tag = document_content.find('div', {'class': 'paging'}).find('strong')
             regex = re.compile(r'<strong>(?P<num>\d+)')
