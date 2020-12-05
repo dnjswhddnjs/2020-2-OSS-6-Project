@@ -16,7 +16,7 @@ from newspaper import Article
 
         
         
-        class ArticleCrawler(object):
+class ArticleCrawler(object):
     def __init__(self):
         choosen_categories = self.get_catergory()
         self.categories = {'정치': 100, '경제': 101, '사회': 102, '생활문화': 103, '세계': 104, 'IT과학': 105, '오피니언': 110,
