@@ -14,14 +14,34 @@ import requests
 import re
 from newspaper import Article
 
-
-class ArticleCrawler(object):
+        
+        
+        class ArticleCrawler(object):
     def __init__(self):
+        choosen_categories = self.get_catergory()
         self.categories = {'정치': 100, '경제': 101, '사회': 102, '생활문화': 103, '세계': 104, 'IT과학': 105, '오피니언': 110,
                            'politics': 100, 'economy': 101, 'society': 102, 'living_culture': 103, 'world': 104, 'IT_science': 105, 'opinion': 110}
         self.selected_categories = []
         self.date = {'start_year': 0, 'start_month': 0, 'end_year': 0, 'end_month': 0}
+        self.get_date()
+        self.set_date_range(self.date['start_year'],self.date['start_month'],self.date['end_year'],self.date['end_month'])
         self.user_operating_system = str(platform.system())
+        self.set_category(choosen_categories)
+
+    def get_catergory(self):
+        print("카테고리 : 정치 , 경제 , 사회 , 생활문화 , 세계 , IT과학 , 오피니언")
+        print("원하는 카테고리를 입력 하세요(공백으로 구분) : ",end ='')
+        choosen_categories = input()
+        choosen_list = choosen_categories.split(' ')
+        print(choosen_list)
+        return choosen_list
+    
+    def get_date(self):
+        print("크롤링을 원하는 날짜 기간을 입력하세요 ")
+        for keys in self.date.keys() :
+            print(keys + " : ",end= '')
+            get_date = int(input())
+            self.date[keys] = get_date
 
     def set_category(self, *args):
         for key in args:
