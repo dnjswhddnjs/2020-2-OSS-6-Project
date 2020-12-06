@@ -220,12 +220,15 @@ class ArticleCrawler(object):
         writer.close()
         return        
 
-    def start(self):
+    def start(self, isMultiProc):
         # MultiProcess 크롤링 시작
+        
         for category_name in self.selected_categories:
-            self.crawling(category_name)
-            # proc = Process(target=self.crawling, args=(category_name,))
-            # proc.start()
+            if isMultiProc:
+                proc = Process(target=self.crawling, args=(category_name,))
+                proc.start()
+            else:
+                self.crawling(category_name)
 
 
 if __name__ == "__main__":
