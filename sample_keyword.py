@@ -13,6 +13,6 @@ with open(file, 'r') as f:
         #csv파일의 각 줄에서 원하는 키워드 찾기
         if txt[4].find(keyword) != -1:
             print(line)
+            cnt += 1
         line += 1
-        cnt += 1
 print("키워드가 등장하는 기사의 개수 : ", cnt)
