@@ -27,7 +27,6 @@ class ArticleCrawler(object):
         self.set_date_range(self.date['start_year'],self.date['start_month'],self.date['end_year'],self.date['end_month'])
         self.user_operating_system = str(platform.system())
         self.set_category(choosen_categories)
-        self.get_keyword()
         keyword = self.get_keyword()
 
     def get_catergory(self):
@@ -56,7 +55,7 @@ class ArticleCrawler(object):
             return keyword
         else:
             print("invalid input")
-            return
+            return keyword
 ##########################################################                  
 
     def set_category(self, args):
