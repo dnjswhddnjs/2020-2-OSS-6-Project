@@ -26,9 +26,10 @@
   
  이 메서드는 수집하려고자 하는 뉴스의 기간을 의미합니다. 기본적으로 startmonth월부터 endmonth월까지 데이터를 수집합니다.
   
-* **start()**
+* **start(isMultiProc)**
   
  이 메서드는 크롤링 실행 메서드입니다.
+ > 2020-12-06 Edited : 실행 메서드에 멀티 프로세싱 여부를 선택할 수 있게 하는 argument를 추가했습니다. 멀티 프로세싱을 적용하고자 할 때, True Boolean을 전달하면 됩니다.
  
 * **(원하는 키워드가 포함된 기사들을 크롤링하는 메서드)**
  
@@ -56,6 +57,9 @@ Crawler.start()
   
   ![ex_screenshot](./img/multi_process.PNG)
   
+   > 2020-12-06 Edited : start() 메서드에 멀티 프로세싱 여부를 선택할 수 있게 하는 argument를 추가했습니다. 
+   >    > 멀티 프로세싱을 적용하지 않으면, 크롤링 실행 도중 진행상황을 출력되는 csv파일에서 확인할 수 있습니다.
+      
 ## Results
  ![ex_screenshot](./img/article_result.PNG)
  ![ex_screenshot](./img/sport_resultimg.PNG)
@@ -98,9 +102,10 @@ as soon as possible.**
  This method represents the duration of the news you want to collect.  
  Data is collected from startmonth to endmonth.
   
-* **start()**
- 
+* **start(isMultiProc)**
+  
  This method is the crawl execution method.
+ > 2020-12-06 Edited : MultiProcessing option is now added to exectution method. You should set 'isMultiProc' as True when it required.
   
 ## Example
 ```
@@ -118,7 +123,10 @@ Testing with intel i5 9600 cpu showed an average ** 8% ** cpu share per category
 Please adjust the number of categories to match the specifications of the computer running the crawler, or use a loop.
   
   ![ex_screenshot](./img/multi_process.PNG)
-  
+     
+   > 2020-12-06 Edited : MultiProcessing option is now added to method 'start()'.
+   >    > When multiprocessing turns off, you can check the csv file from ongoing crwaler's result.
+      
 ## Results
  ![ex_screenshot](./img/article_result.PNG)
  ![ex_screenshot](./img/sport_resultimg.PNG)
