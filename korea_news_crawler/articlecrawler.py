@@ -27,6 +27,7 @@ class ArticleCrawler(object):
         self.set_date_range(self.date['start_year'],self.date['start_month'],self.date['end_year'],self.date['end_month'])
         self.user_operating_system = str(platform.system())
         self.set_category(choosen_categories)
+        keyword = self.get_keyword()
 
     def get_catergory(self):
         print("카테고리 : 정치 , 경제 , 사회 , 생활문화 , 세계 , IT과학 , 오피니언, 연합뉴스속보")
@@ -42,6 +43,20 @@ class ArticleCrawler(object):
             print(keys + " : ",end= '')
             get_date = int(input())
             self.date[keys] = get_date
+            
+##########################################################
+    def get_keyword(self):
+        keyword = 'initvalue'
+        ynkeyword = input("기사 제목 키워드 찾기 기능을 사용하시겠습니까? (y/n) :")
+        if ynkeyword == "n" or ynkeyword == "N":
+            return keyword
+        elif ynkeyword == "y" or ynkeyword == "Y":
+            keyword = input("원하는 키워드를 입력해주세요 :")
+            return keyword
+        else:
+            print("invalid input")
+            return keyword
+##########################################################                  
 
     def set_category(self, args):
         for key in args:
@@ -172,6 +187,7 @@ class ArticleCrawler(object):
         
             
             print(len(post))
+
             for i in range(len(post)):  # 기사 URL
                 # 크롤링 대기 시간
                 print(i)
@@ -186,8 +202,18 @@ class ArticleCrawler(object):
                     text_sentence = article.text.strip()
                     text_company = companys[i]
                     text_headline = headlines[i].strip()
-                    wcsv = writer.get_writer_csv()
-                    wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
+        ######################################################################
+                    if keyword == 'initvalue':
+                        wcsv = writer.get_writer_csv()
+                        wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
+                    else:
+                        headline_to_words = text_headline.split()
+                        if headlint_to_words.index(keyword) == 1:
+                            wcsv = writer.get_writer_csv()
+                            wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
+        ######################################################################
+
+                            
                 except Exception as err:
                     print(err)
         
@@ -204,6 +230,7 @@ class ArticleCrawler(object):
 
 if __name__ == "__main__":
     Crawler = ArticleCrawler()
-    Crawler.set_category("생활문화", "IT과학")
-    Crawler.set_date_range(2017, 1, 2018, 4)
+    #Crawler.set_category("생활문화", "IT과학")
+    #Crawler.set_date_range(2017, 1, 2018, 4)
     Crawler.start()
+
