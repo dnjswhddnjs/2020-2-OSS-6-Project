@@ -16,6 +16,14 @@ import calendar
 import requests
 import re
 
+#네이버 오픈API 서비스를 이용하여 Client Id와 Secert 발급받기
+clientId = "a1iQBNA9ABqLk88S0m0X"
+clientSecret = "NnuTDAbz6P"
+header = {
+    "X-Naver-Client-Id":clientId,
+    "X-Naver-Client-Secret":clientSecret
+}
+
 
 class ArticleCrawler(object):
     def __init__(self):
@@ -85,7 +93,7 @@ class ArticleCrawler(object):
         remaining_tries = int(max_tries)
         while remaining_tries > 0:
             try:
-                return requests.get(url)
+                return requests.get(url, headers=header)
             except requests.exceptions:
                 sleep(60)
             remaining_tries = remaining_tries - 1
