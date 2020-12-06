@@ -16,7 +16,7 @@
  이 메서드는 수집하려고자 하는 카테고리는 설정하는 메서드입니다.  
  파라미터에 들어갈 수 있는 카테고리는 '정치', '경제', '사회', '생활문화', 'IT과학', '세계', '오피니언','연합뉴스속보'입니다.  
  파라미터는 여러 개 들어갈 수 있습니다.  
- category_name: 정치, 경제, 사회, 생활문화, IT과학, 세계, 오피니언, 연합뉴스속보 or politics, economy, society, living_culture, IT_science, world, opinion, Yeonhap NEwsflash
+ category_name: 정치, 경제, 사회, 생활문화, IT과학, 세계, 오피니언, 연합뉴스속보 or politics, economy, society, living_culture, IT_science, world, opinion, Yeonhap Newsflash
   
 * **set_date_range(startyear, startmonth, endyear, endmonth)**
   
@@ -86,7 +86,7 @@ as soon as possible.**
 * **set_category(category_name)**
  
  This method is setting categories that you want to crawl.  
- Categories that can be entered into parameters are politics, economy, society, living_culture, IT_science. 
+ Categories that can be entered into parameters are politics, economy, society, living_culture, IT_science, and Yeonhap Newsflash. 
  Multiple parameters can be entered.
   
 * **set_date_range(startyear, startmonth, endyear, endmonth)**
