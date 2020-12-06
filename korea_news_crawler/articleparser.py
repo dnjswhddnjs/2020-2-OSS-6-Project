@@ -1,3 +1,4 @@
+#네이버 오픈API 서비스를 이용하여 크롤링을 빠르게 하고자 하였으나, 잘 작동하지 않음.
 from bs4 import BeautifulSoup
 import requests
 import re
