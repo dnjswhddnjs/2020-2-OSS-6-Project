@@ -27,7 +27,7 @@ class ArticleCrawler(object):
         self.set_date_range(self.date['start_year'],self.date['start_month'],self.date['end_year'],self.date['end_month'])
         self.user_operating_system = str(platform.system())
         self.set_category(choosen_categories)
-        keyword = self.get_keyword()
+        self.keyword = self.get_keyword()
 
     def get_catergory(self):
         print("카테고리 : 정치 , 경제 , 사회 , 생활문화 , 세계 , IT과학 , 오피니언, 연합뉴스속보")
@@ -203,14 +203,18 @@ class ArticleCrawler(object):
                     text_company = companys[i]
                     text_headline = headlines[i].strip()
         ######################################################################
-                    if keyword == 'initvalue':
+                    if self.keyword == 'initvalue':
                         wcsv = writer.get_writer_csv()
                         wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
                     else:
+                        print("aa")
                         headline_to_words = text_headline.split()
-                        if headlint_to_words.index(keyword) == 1:
+                        print("bb")
+                        if headline_to_words.index(self.keyword) >= 0:
+                            print("cc")
                             wcsv = writer.get_writer_csv()
                             wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
+                        print("dd")
         ######################################################################
 
                             
