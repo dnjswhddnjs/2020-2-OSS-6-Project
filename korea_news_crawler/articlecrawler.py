@@ -49,14 +49,14 @@ class ArticleCrawler(object):
     def get_keyword(self):
         keyword = 'init'
         ynkeyword = input("기사 제목 키워드 찾기 기능을 사용하시겠습니까? (y/n) :")
-        if (ynkeyword == "n" or ynkeyword == "N"):
-            return;
-        elif (ynkeyword == "y" or ynkeyword == "Y"):
+        if ynkeyword == "n" or ynkeyword == "N":
+            return
+        elif ynkeyword == "y" or ynkeyword == "Y":
             keyword = input("원하는 키워드를 입력해주세요 :")
-            return;
+            return
         else:
             print("invalid input")
-            return;
+            return
         
 
     def set_category(self, args):
