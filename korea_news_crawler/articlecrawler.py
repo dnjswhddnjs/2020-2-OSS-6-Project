@@ -207,14 +207,10 @@ class ArticleCrawler(object):
                         wcsv = writer.get_writer_csv()
                         wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
                     else:
-                        print("aa")
                         headline_to_words = text_headline.split()
-                        print("bb")
                         if headline_to_words.index(self.keyword) >= 0:
-                            print("cc")
                             wcsv = writer.get_writer_csv()
                             wcsv.writerow([news_date, category_name, text_company, text_headline, text_sentence, content_url])
-                        print("dd")
         ######################################################################
 
                             
