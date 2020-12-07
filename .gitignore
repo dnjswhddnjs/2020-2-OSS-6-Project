@@ -1,0 +1,3 @@
+korea_news_crawler/__pycache__/*.pyc
+/dist
+/Article_*
